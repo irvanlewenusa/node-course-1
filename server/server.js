@@ -17,23 +17,18 @@ app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
     console.log('user baru terkoneksi');
 
-    // socket.emit('newEmail',{
-    //     from: 'irvanln@gmail.com',
-    //     text: 'hello world',
-    //     createAt : 123
-    // });
-
-    // socket.emit('newPesan',{
-    //     from: 'irvan',
-    //     text: 'see oyyy',
-    //     createedAt : 123321
-    // });
-
-    // socket.on('createEmail',(newEmail)=>{
-    //     console.log('createEmail',newEmail);
-
-    // });
-
+    //socket.emit from admin text welcome to chat app
+    socket.emit('newMessage',{
+        from:'Admin',
+        text: 'welcome to the chat app',
+        createedAt: new Date().getTime()
+    });
+    //socket.broadcast.emit forma admin text new user joined
+    socket.broadcast.emit('newMessage',{
+        from : 'Admin',
+        text:'new user joined',
+        createedAt: new Date().getTime()
+    });
     socket.on('createMessage',(message)=>{
         console.log('createMessage', message);
 
@@ -43,6 +38,11 @@ io.on('connection',(socket)=>{
             text: message.text,
             createedAt: new Date().getTime()
         });
+        // socket.broadcast.emit('newMessage',{
+        //     from: message.from,
+        //     text: message.text,
+        //     createedAt: new Date().getTime()
+        // });
 
     });
 
